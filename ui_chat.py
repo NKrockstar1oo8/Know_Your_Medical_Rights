@@ -66,15 +66,6 @@ if analyze_clicked and user_input.strip():
     verdict = evaluator.evaluate(facts)
 
     # ----------------------------
-    # 3. Save locally (optional, audit)
-    # ----------------------------
-    save_chat(
-        user_input=user_input,
-        extracted_facts=facts,
-        verdict=verdict
-    )
-
-    # ----------------------------
     # 4. Log to Google Sheets (NEW)
     # ----------------------------
     try:
