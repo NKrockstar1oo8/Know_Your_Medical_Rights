@@ -4,7 +4,6 @@ import streamlit as st
 
 from core.fact_extractor import FactExtractor
 from core.rights_evaluator import RightsEvaluator
-from core.chat_history import save_chat
 from core.sheets_logger import log_to_google_sheets
 
 # -------------------------------------------------
