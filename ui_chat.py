@@ -1,5 +1,6 @@
 import os
 import streamlit as st
+from core.sheets_logger import log_to_google_sheets
 
 from core.fact_extractor import FactExtractor
 from core.rights_evaluator import RightsEvaluator
