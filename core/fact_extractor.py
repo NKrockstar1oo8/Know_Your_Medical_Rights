@@ -86,7 +86,7 @@ class FactExtractor:
         # Treatment refusal
         # =====================================================
         if re.search(
-            r"(refused|did not treat|denied treatment|no treatment|ignored)",
+            r"(refused|deny|denied|did not treat|no treatment|ignored)",
             text
         ):
             facts["treatment_refused"] = "yes"
@@ -95,7 +95,7 @@ class FactExtractor:
         # Admission denied
         # =====================================================
         if re.search(
-            r"(denied admission|refused admission|refused to admit|not admitted|not allowed to admit)",
+            r"(denied admission|denied to admit|refused admission|refused to admit|not admitted|not allowed to admit)",
             text
         ):
             facts["admission_denied"] = "yes"
@@ -104,7 +104,7 @@ class FactExtractor:
         # Payment demanded
         # =====================================================
         if re.search(
-            r"(payment first|pay first|asked for money|demanded money|fees first|advance payment)",
+            r"(ask|asked|asking).*(payment|money|fees)|full payment|payment first|pay first|fees first|advance payment",
             text
         ):
             facts["payment_demanded"] = "yes"
