@@ -1,0 +1,12 @@
+{"timestamp": 1768378895, "event_type": "PIPELINE_START", "payload": {"query": {"pregnancy_weeks": 20, "medical_practitioner_involved": true, "emergency_context": false}}}
+{"timestamp": 1768379169, "event_type": "PIPELINE_START", "payload": {"query": {"pregnancy_weeks": 20, "medical_practitioner_involved": true, "emergency_context": false}}}
+{"timestamp": 1768379169, "event_type": "PIPELINE_COMPLETE", "payload": {"verdict": "NOT_PROVABLE", "proof": {"symbols_used": []}}}
+{"timestamp": 1768382576, "event_type": "PIPELINE_START", "payload": {"query": {"informed_consent_taken": true, "emergency_care_provided": false, "confidentiality_maintained": false}}}
+{"timestamp": 1768382576, "event_type": "PIPELINE_COMPLETE", "payload": {"verdict": "NOT_PROVABLE", "proof": {"symbols_used": []}}}
+{"timestamp": 1768382587, "event_type": "PIPELINE_START", "payload": {"query": {"informed_consent_taken": true, "emergency_care_provided": true, "confidentiality_maintained": false}}}
+{"timestamp": 1768382587, "event_type": "PIPELINE_COMPLETE", "payload": {"verdict": "NOT_PROVABLE", "proof": {"symbols_used": []}}}
+{"timestamp": 1768382588, "event_type": "PIPELINE_START", "payload": {"query": {"informed_consent_taken": true, "emergency_care_provided": true, "confidentiality_maintained": false}}}
+{"timestamp": 1768382588, "event_type": "PIPELINE_COMPLETE", "payload": {"verdict": "NOT_PROVABLE", "proof": {"symbols_used": []}}}
+{"timestamp": 1768382592, "event_type": "PIPELINE_START", "payload": {"query": {"informed_consent_taken": true, "emergency_care_provided": true, "confidentiality_maintained": true}}}
+{"timestamp": 1768382592, "event_type": "PIPELINE_COMPLETE", "payload": {"verdict": "PROVABLE", "proof": {"symbols_used": ["DUTY_INFORMED_CONSENT_SATISFIED", "DUTY_EMERGENCY_CARE_SATISFIED", "DUTY_CONFIDENTIALITY_SATISFIED"]}}}
+{"timestamp": 1768394149, "event_type": "CHAT_QUERY", "payload": {"input": "hi\nMy friend met with an accident, hospital staff is denying admission, what do i do?", "facts": {"medical_records_requested": "yes", "emergency_case": "no", "consent_issue": "unknown", "doctor_involved": "yes", "hospital_involved": "yes"}, "verdict": {"verdict": "PROVABLE_RIGHT", "right": "RIGHT_TO_RECORDS_AND_REPORTS", "source": "NHRC_2019"}}}

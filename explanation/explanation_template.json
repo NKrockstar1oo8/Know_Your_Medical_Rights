@@ -1,0 +1,26 @@
+{
+  "template_id": "EXPLANATION_TEMPLATE_V1",
+  "inputs_allowed": [
+    "verdict",
+    "proof"
+  ],
+  "forbidden_words": [
+    "legal",
+    "illegal",
+    "allowed",
+    "permitted",
+    "valid",
+    "compliant",
+    "should",
+    "can",
+    "cannot"
+  ],
+  "output_constraints": {
+    "max_sentences": 5,
+    "tone": "neutral",
+    "authority": "non_authoritative",
+    "reasoning": "forbidden",
+    "interpretation": "forbidden"
+  },
+  "template": "The system produced the verdict: {{verdict}}. This result is based solely on the following proof symbols: {{proof.symbols_used}}. No additional conclusions were derived beyond these symbols. The explanation reflects only the recorded inputs and outputs of the system. It does not extend beyond the provided proof."
+}

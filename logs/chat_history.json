@@ -1,0 +1,65 @@
+[
+  {
+    "timestamp": "2026-01-17T05:54:37.666684",
+    "user_input": "doctor refused to admit and abusing my brother who got injured in an car accident",
+    "extracted_facts": {
+      "emergency_case": "yes",
+      "emergency_claimed": "no",
+      "admission_denied": "yes",
+      "payment_demanded": "no",
+      "treatment_refused": "yes",
+      "doctor_involved": "yes",
+      "hospital_involved": "unknown",
+      "consent_issue": "unknown",
+      "privacy_breached": "unknown",
+      "second_opinion_denied": "unknown",
+      "billing_issue": "unknown",
+      "discrimination_claimed": "unknown",
+      "doctor_under_influence": "no",
+      "mistreatment_claimed": "no",
+      "abuse_claimed": "yes",
+      "unethical_behavior_claimed": "no",
+      "records_issue": {
+        "requested": "unknown",
+        "denied": "unknown",
+        "by_doctor": "yes",
+        "by_hospital": "unknown"
+      }
+    },
+    "system_verdict": {
+      "verdict_type": "PROVABLE",
+      "primary_violations": [
+        {
+          "id": "RIGHT_TO_EMERGENCY_MEDICAL_CARE",
+          "source": "NHRC_2019",
+          "citation": "Charter of Patients\u2019 Rights (NHRC, 2019), Clause 3",
+          "explanation": [
+            "Emergency medical care must not be delayed or denied.",
+            "Refusal of treatment or admission in an emergency violates patient rights."
+          ]
+        }
+      ],
+      "procedural_remedies": [
+        {
+          "id": "PROFESSIONAL_MISCONDUCT_BY_DOCTOR",
+          "source": "IMC_2002",
+          "citation": "Indian Medical Council (Professional Conduct, Etiquette and Ethics) Regulations, 2002",
+          "explanation": [
+            "Doctors must maintain dignity and professional conduct.",
+            "Abusive or unethical behaviour may amount to misconduct.",
+            "A complaint can be filed with the State Medical Council."
+          ]
+        },
+        {
+          "id": "RIGHT_TO_GRIEVANCE_REDRESSAL",
+          "source": "NHRC_2019",
+          "citation": "Charter of Patients\u2019 Rights (NHRC, 2019), Clause 17",
+          "explanation": [
+            "Patients have the right to file grievances.",
+            "Hospitals must provide grievance redressal mechanisms."
+          ]
+        }
+      ]
+    }
+  }
+]

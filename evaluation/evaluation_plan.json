@@ -1,0 +1,54 @@
+{
+  "evaluation_id": "PL_KAG_EVAL_V1",
+  "system_scope": {
+    "domain": "Medical-Legal Rights",
+    "documents_covered": [
+      "NHRC Charter of Patients’ Rights (2019)",
+      "IMC Professional Conduct, Etiquette and Ethics Regulations (2002)"
+    ],
+    "decision_method": "Deterministic rule-based evaluation",
+    "excluded_domains": [
+      "Criminal law (IPC/CrPC)",
+      "Medical advice",
+      "Judicial interpretation",
+      "Policy optimization"
+    ]
+  },
+  "claims": [
+    {
+      "claim_id": "C1_FAIL_CLOSED",
+      "description": "System refuses or limits output when required facts are missing or unknown",
+      "verified_by": [
+        "TEST_MISSING_FIELD",
+        "TEST_UNKNOWN_FIELD"
+      ]
+    },
+    {
+      "claim_id": "C2_NO_INFERENCE",
+      "description": "System produces no legal verdict without explicit fact-based proof",
+      "verified_by": [
+        "TEST_NO_PROOF_SYMBOLS"
+      ]
+    },
+    {
+      "claim_id": "C3_DETERMINISM",
+      "description": "Identical inputs always yield identical outputs",
+      "verified_by": [
+        "TEST_DETERMINISM_REPEAT"
+      ]
+    },
+    {
+      "claim_id": "C4_LLM_SANDBOX",
+      "description": "Any explanation generated contains no legal reasoning or forbidden terms",
+      "verified_by": [
+        "TEST_FORBIDDEN_WORDS"
+      ]
+    }
+  ],
+  "non_goals": [
+    "General legal interpretation beyond NHRC and IMC scope",
+    "Medical diagnosis or treatment advice",
+    "Prediction of court outcomes"
+  ]
+}
+

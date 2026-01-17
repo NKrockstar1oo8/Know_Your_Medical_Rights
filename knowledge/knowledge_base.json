@@ -1,0 +1,345 @@
+{
+  "knowledge_entries": [
+
+    /* =========================
+       NHRC 2019 — PATIENT RIGHTS
+       ========================= */
+
+    {
+      "id": "RIGHT_TO_INFORMATION",
+      "type": "RIGHT",
+      "holder_or_bearer": "PATIENT",
+      "source": "NHRC_2019",
+      "exact_citation": {
+        "document": "Charter of Patients’ Rights (NHRC, 2019)",
+        "section": "Rights of Patients",
+        "clause": "1",
+        "title": "Right to Information and Disclosure"
+      },
+      "legal_text_excerpt": "Every patient has the right to adequate relevant information regarding diagnosis, nature and cause of illness, proposed investigations and treatment, risks involved, and expected costs, explained in a language understood by the patient.",
+      "legal_meaning": [
+        "Patient must be informed about illness, diagnosis, and treatment",
+        "Information must be explained in an understandable language",
+        "Expected costs must be clearly disclosed"
+      ],
+      "user_friendly_explanation": [
+        "You have the right to know about your illness and treatment",
+        "Doctors must explain things clearly",
+        "Hospital must tell you expected costs in advance"
+      ],
+      "conditions": ["NONE"],
+      "exceptions": ["NONE"]
+    },
+
+    {
+      "id": "RIGHT_TO_RECORDS_AND_REPORTS",
+      "type": "RIGHT",
+      "holder_or_bearer": "PATIENT",
+      "source": "NHRC_2019",
+      "exact_citation": {
+        "document": "Charter of Patients’ Rights (NHRC, 2019)",
+        "section": "Rights of Patients",
+        "clause": "2",
+        "title": "Right to Records and Reports"
+      },
+      "legal_text_excerpt": "Patients have the right to access copies of medical records, case papers, and investigation reports within prescribed timelines.",
+      "legal_meaning": [
+        "Patient can request medical records and reports",
+        "Hospital must provide records within prescribed timelines"
+      ],
+      "user_friendly_explanation": [
+        "You can ask for your medical files and reports",
+        "Hospital must give them within a fixed time"
+      ],
+      "conditions": ["Request by patient or authorized person"],
+      "exceptions": ["NONE"]
+    },
+
+    {
+      "id": "RIGHT_TO_EMERGENCY_MEDICAL_CARE",
+      "type": "RIGHT",
+      "holder_or_bearer": "PATIENT",
+      "source": "NHRC_2019",
+      "exact_citation": {
+        "document": "Charter of Patients’ Rights (NHRC, 2019)",
+        "section": "Rights of Patients",
+        "clause": "3",
+        "title": "Right to Emergency Medical Care"
+      },
+      "legal_text_excerpt": "All hospitals are duty bound to provide emergency medical care without demanding advance payment.",
+      "legal_meaning": [
+        "Emergency treatment cannot be denied",
+        "Payment cannot be demanded before emergency care"
+      ],
+      "user_friendly_explanation": [
+        "In an emergency, hospital must treat you first",
+        "They cannot ask for money before saving your life"
+      ],
+      "conditions": ["Emergency situation"],
+      "exceptions": ["NONE"]
+    },
+
+    {
+      "id": "RIGHT_TO_INFORMED_CONSENT",
+      "type": "RIGHT",
+      "holder_or_bearer": "PATIENT",
+      "source": "NHRC_2019",
+      "exact_citation": {
+        "document": "Charter of Patients’ Rights (NHRC, 2019)",
+        "section": "Rights of Patients",
+        "clause": "4",
+        "title": "Right to Informed Consent"
+      },
+      "legal_text_excerpt": "Informed consent must be obtained prior to any potentially hazardous medical procedure.",
+      "legal_meaning": [
+        "Consent is mandatory before risky procedures",
+        "Risks and alternatives must be explained"
+      ],
+      "user_friendly_explanation": [
+        "Doctors must ask your permission before major procedures",
+        "They must explain risks before you agree"
+      ],
+      "conditions": ["Hazardous or invasive procedure"],
+      "exceptions": ["Life-threatening emergency"]
+    },
+
+    {
+      "id": "RIGHT_TO_PRIVACY_AND_CONFIDENTIALITY",
+      "type": "RIGHT",
+      "holder_or_bearer": "PATIENT",
+      "source": "NHRC_2019",
+      "exact_citation": {
+        "document": "Charter of Patients’ Rights (NHRC, 2019)",
+        "section": "Rights of Patients",
+        "clause": "5",
+        "title": "Right to Confidentiality, Human Dignity and Privacy"
+      },
+      "legal_text_excerpt": "All patients have the right to privacy and confidentiality of their medical information.",
+      "legal_meaning": [
+        "Medical information must be kept confidential",
+        "Patient dignity must be respected"
+      ],
+      "user_friendly_explanation": [
+        "Your medical details must be kept private",
+        "Hospital staff must respect your dignity"
+      ],
+      "conditions": ["NONE"],
+      "exceptions": ["Disclosure required by law or public health interest"]
+    },
+
+    {
+      "id": "RIGHT_TO_SECOND_OPINION",
+      "type": "RIGHT",
+      "holder_or_bearer": "PATIENT",
+      "source": "NHRC_2019",
+      "exact_citation": {
+        "document": "Charter of Patients’ Rights (NHRC, 2019)",
+        "section": "Rights of Patients",
+        "clause": "6",
+        "title": "Right to Second Opinion"
+      },
+      "legal_text_excerpt": "Every patient has the right to seek a second opinion from a clinician of their choice.",
+      "legal_meaning": [
+        "Patient may consult another doctor",
+        "Hospital must not obstruct this right"
+      ],
+      "user_friendly_explanation": [
+        "You are free to consult another doctor",
+        "Hospital must not stop you"
+      ],
+      "conditions": ["NONE"],
+      "exceptions": ["NONE"]
+    },
+
+    {
+      "id": "RIGHT_TO_TRANSPARENCY_IN_RATES",
+      "type": "RIGHT",
+      "holder_or_bearer": "PATIENT",
+      "source": "NHRC_2019",
+      "exact_citation": {
+        "document": "Charter of Patients’ Rights (NHRC, 2019)",
+        "section": "Rights of Patients",
+        "clause": "7",
+        "title": "Right to Transparency in Rates"
+      },
+      "legal_text_excerpt": "Patients have the right to transparent and prominently displayed rates and itemized bills.",
+      "legal_meaning": [
+        "Charges must be disclosed clearly",
+        "Bills must be itemized"
+      ],
+      "user_friendly_explanation": [
+        "Hospital must clearly show treatment charges",
+        "You should receive a clear bill"
+      ],
+      "conditions": ["NONE"],
+      "exceptions": ["NONE"]
+    },
+
+    {
+      "id": "RIGHT_TO_NON_DISCRIMINATION",
+      "type": "RIGHT",
+      "holder_or_bearer": "PATIENT",
+      "source": "NHRC_2019",
+      "exact_citation": {
+        "document": "Charter of Patients’ Rights (NHRC, 2019)",
+        "section": "Rights of Patients",
+        "clause": "8",
+        "title": "Right to Non-Discrimination"
+      },
+      "legal_text_excerpt": "No patient shall be discriminated against on any grounds.",
+      "legal_meaning": [
+        "Equal treatment must be given to all patients"
+      ],
+      "user_friendly_explanation": [
+        "You must not be treated unfairly",
+        "Everyone has equal patient rights"
+      ],
+      "conditions": ["NONE"],
+      "exceptions": ["NONE"]
+    },
+
+    {
+      "id": "RIGHT_TO_SAFETY_AND_QUALITY_CARE",
+      "type": "RIGHT",
+      "holder_or_bearer": "PATIENT",
+      "source": "NHRC_2019",
+      "exact_citation": {
+        "document": "Charter of Patients’ Rights (NHRC, 2019)",
+        "section": "Rights of Patients",
+        "clause": "9",
+        "title": "Right to Safety and Quality Care"
+      },
+      "legal_text_excerpt": "Patients have the right to safe and quality health care according to established standards.",
+      "legal_meaning": [
+        "Care must meet accepted safety standards"
+      ],
+      "user_friendly_explanation": [
+        "You have the right to safe medical care",
+        "Treatment should meet accepted standards"
+      ],
+      "conditions": ["Explicit safety lapse claimed"],
+      "exceptions": ["NONE"]
+    },
+
+    {
+      "id": "RIGHT_TO_GRIEVANCE_REDRESSAL",
+      "type": "RIGHT",
+      "holder_or_bearer": "PATIENT",
+      "source": "NHRC_2019",
+      "exact_citation": {
+        "document": "Charter of Patients’ Rights (NHRC, 2019)",
+        "section": "Rights of Patients",
+        "clause": "17",
+        "title": "Right to Grievance Redressal"
+      },
+      "legal_text_excerpt": "Every patient has the right to lodge complaints and seek redressal for grievances.",
+      "legal_meaning": [
+        "Patient may complain against mistreatment",
+        "Hospital must have grievance mechanism"
+      ],
+      "user_friendly_explanation": [
+        "You can complain if you are mistreated",
+        "Hospital must listen and respond"
+      ],
+      "conditions": ["NONE"],
+      "exceptions": ["NONE"]
+    },
+
+    /* =========================
+       IMC 2002 — DOCTOR DUTIES
+       ========================= */
+
+    {
+      "id": "DUTY_TO_RESPOND_TO_EMERGENCIES",
+      "type": "DUTY",
+      "holder_or_bearer": "DOCTOR",
+      "source": "IMC_2002",
+      "exact_citation": {
+        "document": "Indian Medical Council (Professional Conduct, Etiquette and Ethics) Regulations, 2002",
+        "section": "Chapter 2",
+        "clause": "2.1.1",
+        "title": "Obligations to the Sick"
+      },
+      "legal_text_excerpt": "In case of emergency, a physician must treat the patient and shall not arbitrarily refuse treatment.",
+      "legal_meaning": [
+        "Doctor must respond in emergencies",
+        "Refusal of emergency care is prohibited"
+      ],
+      "user_friendly_explanation": [
+        "Doctor must help in emergencies",
+        "They cannot refuse without reason"
+      ],
+      "conditions": ["Emergency situation"],
+      "exceptions": ["NONE"]
+    },
+
+    {
+      "id": "DUTY_NOT_TO_PRACTICE_UNDER_INFLUENCE",
+      "type": "DUTY",
+      "holder_or_bearer": "DOCTOR",
+      "source": "IMC_2002",
+      "exact_citation": {
+        "document": "Indian Medical Council (Professional Conduct, Etiquette and Ethics) Regulations, 2002",
+        "section": "Chapter 2",
+        "clause": "2.1.2",
+        "title": "Physician not to practice under influence"
+      },
+      "legal_text_excerpt": "A physician shall not practice medicine while under the influence of alcohol or drugs.",
+      "legal_meaning": [
+        "Doctor must not treat patients while intoxicated"
+      ],
+      "user_friendly_explanation": [
+        "Doctor must never treat patients while drunk or intoxicated"
+      ],
+      "conditions": ["NONE"],
+      "exceptions": ["NONE"]
+    },
+
+    {
+      "id": "DUTY_NOT_TO_NEGLECT_PATIENT",
+      "type": "DUTY",
+      "holder_or_bearer": "DOCTOR",
+      "source": "IMC_2002",
+      "exact_citation": {
+        "document": "Indian Medical Council (Professional Conduct, Etiquette and Ethics) Regulations, 2002",
+        "section": "Chapter 2",
+        "clause": "2.4",
+        "title": "The patient must not be neglected"
+      },
+      "legal_text_excerpt": "Once a physician has undertaken a case, he shall not neglect the patient or withdraw without adequate notice.",
+      "legal_meaning": [
+        "Doctor must not abandon patient care"
+      ],
+      "user_friendly_explanation": [
+        "Doctor cannot suddenly stop treating you"
+      ],
+      "conditions": ["Doctor has accepted the case"],
+      "exceptions": ["Proper referral with notice"]
+    },
+
+    {
+      "id": "DUTY_TO_MAINTAIN_MEDICAL_RECORDS",
+      "type": "DUTY",
+      "holder_or_bearer": "DOCTOR",
+      "source": "IMC_2002",
+      "exact_citation": {
+        "document": "Indian Medical Council (Professional Conduct, Etiquette and Ethics) Regulations, 2002",
+        "section": "Chapter 1",
+        "clause": "1.3.1–1.3.2",
+        "title": "Maintenance of Medical Records"
+      },
+      "legal_text_excerpt": "Every physician shall maintain medical records and provide them within 72 hours upon request.",
+      "legal_meaning": [
+        "Doctor must maintain records",
+        "Records must be provided within 72 hours"
+      ],
+      "user_friendly_explanation": [
+        "Doctor must keep your medical files",
+        "They must give copies within 72 hours"
+      ],
+      "conditions": ["Request by patient or authorized person"],
+      "exceptions": ["NONE"]
+    }
+
+  ]
+}

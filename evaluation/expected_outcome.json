@@ -1,0 +1,13 @@
+{
+  "TC_EMERGENCY_REFUSAL": {
+    "verdict_type": "PROVABLE",
+    "primary_violation": "RIGHT_TO_EMERGENCY_MEDICAL_CARE"
+  },
+  "TC_ABUSE_ONLY": {
+    "verdict_type": "PROCEDURAL_REMEDY_AVAILABLE"
+  },
+  "TC_INSUFFICIENT_FACTS": {
+    "verdict_type": "NOT_PROVABLE"
+  }
+}
+

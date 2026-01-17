@@ -1,0 +1,18 @@
+system:
+  name: "Deterministic Medical Legal Advisor"
+  mode: "DEVELOPMENT"
+
+phases:
+  phase_0: COMPLETE
+  phase_1: LOCKED
+  phase_2: LOCKED
+  phase_3: LOCKED
+  phase_4: LOCKED
+  phase_5: LOCKED
+  phase_6: LOCKED
+  phase_7: LOCKED
+  phase_8: LOCKED
+
+llm:
+  enabled: false
+  role: "EXPLANATION_ONLY"

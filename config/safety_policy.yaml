@@ -1,0 +1,8 @@
+safety:
+  allow_llm_reasoning: false
+  allow_legal_inference: false
+  allow_missing_facts: false
+  allow_probabilistic_logic: false
+
+enforcement:
+  hard_fail_on_violation: true
