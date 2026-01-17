@@ -6,19 +6,13 @@ from core.rights_evaluator import RightsEvaluator
 from core.chat_history import save_chat
 
 # =====================================================
-# MODE CONFIGURATION
+# APPLICATION MODE
 # =====================================================
-# Environment-based default:
-# - Local machine → Developer Mode ON
-# - Cloud deployment → Developer Mode OFF
-#
-# To force production mode in cloud:
-# set environment variable: APP_MODE=PRODUCTION
+# DEVELOPMENT  -> local use (developer controls visible)
+# PRODUCTION   -> public deployment (controls hidden)
 # =====================================================
 
 APP_MODE = os.getenv("APP_MODE", "DEVELOPMENT")
-
-DEFAULT_DEVELOPER_MODE = True if APP_MODE == "DEVELOPMENT" else False
 
 # =====================================================
 # System setup
@@ -33,23 +27,26 @@ st.set_page_config(
 )
 
 # =====================================================
-# Sidebar (Developer Controls)
+# Sidebar — Developer Controls (DEV ONLY)
 # =====================================================
-with st.sidebar:
-    st.header("⚙️ System Controls")
+if APP_MODE == "DEVELOPMENT":
+    with st.sidebar:
+        st.header("⚙️ System Controls")
 
-    developer_mode = st.checkbox(
-        "Developer Mode (show extracted facts)",
-        value=DEFAULT_DEVELOPER_MODE
-    )
+        developer_mode = st.checkbox(
+            "Developer Mode (show extracted facts)",
+            value=True
+        )
 
-    st.caption(
-        "Developer mode reveals internal diagnostic data. "
-        "Disable for public use."
-    )
+        st.caption(
+            "Developer mode reveals internal diagnostic data. "
+            "This panel is hidden in public deployment."
+        )
+else:
+    developer_mode = False
 
 # =====================================================
-# UI Header (UNCHANGED)
+# UI Header
 # =====================================================
 st.title("⚖️ Medical-Legal Rights Assistant")
 
@@ -89,13 +86,19 @@ if submit:
     if not user_input.strip():
         st.warning("Please describe your issue.")
     else:
-        # ---- Fact Extraction ----
+        # -----------------------------
+        # Fact Extraction
+        # -----------------------------
         facts = fact_extractor.extract(user_input)
 
-        # ---- Rights Evaluation ----
+        # -----------------------------
+        # Rights Evaluation
+        # -----------------------------
         verdict = rights_evaluator.evaluate(facts)
 
-        # ---- Audit Logging (ALWAYS ON) ----
+        # -----------------------------
+        # Audit Logging (ALWAYS)
+        # -----------------------------
         save_chat(
             user_input=user_input,
             facts=facts,
@@ -103,7 +106,7 @@ if submit:
         )
 
         # =====================================================
-        # Developer View (HIDDEN FROM USERS)
+        # Developer View (HIDDEN IN PRODUCTION)
         # =====================================================
         if developer_mode:
             st.subheader("🔍 Extracted Facts (Developer View)")
@@ -143,6 +146,7 @@ if submit:
                     st.success(f"✅ Proven Violation: **{v['id']}**")
                     st.markdown(f"**Source:** {v['source']}")
                     st.markdown(f"📚 **Citation:** {v['citation']}")
+
                     for line in v.get("explanation", []):
                         st.markdown(f"- {line}")
 
