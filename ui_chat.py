@@ -1,214 +1,145 @@
-import os
+# ui_chat.py
+
 import streamlit as st
-from core.sheets_logger import log_to_google_sheets
 
 from core.fact_extractor import FactExtractor
 from core.rights_evaluator import RightsEvaluator
 from core.chat_history import save_chat
+from core.sheets_logger import log_to_google_sheets
 
-# =====================================================
-# APPLICATION MODE
-# =====================================================
-# DEVELOPMENT  -> local use (developer controls visible)
-# PRODUCTION   -> public deployment (controls hidden)
-# =====================================================
-
-APP_MODE = os.getenv("APP_MODE", "DEVELOPMENT")
-
-# =====================================================
-# System setup
-# =====================================================
-fact_extractor = FactExtractor()
-rights_evaluator = RightsEvaluator()
-
+# -------------------------------------------------
+# Page config
+# -------------------------------------------------
 st.set_page_config(
     page_title="Medical-Legal Rights Assistant",
-    page_icon="⚖️",
-    layout="centered"
+    layout="wide",
 )
 
-# =====================================================
-# Sidebar — Developer Controls (DEV ONLY)
-# =====================================================
-if APP_MODE == "DEVELOPMENT":
-    with st.sidebar:
-        st.header("⚙️ Admin Controls")
-
-        developer_mode = st.checkbox(
-            "Developer Mode (show extracted facts)",
-            value=True
-        )
-
-        st.caption(
-            "Admin-only controls. Hidden in public deployment."
-        )
-
-        st.markdown("---")
-        st.subheader("📥 Audit Logs")
-
-        try:
-            with open("logs/chat_history.db", "rb") as db_file:
-                st.download_button(
-                    label="⬇️ Download chat history (SQLite)",
-                    data=db_file,
-                    file_name="chat_history.db",
-                    mime="application/octet-stream"
-                )
-        except FileNotFoundError:
-            st.warning("No logs available yet.")
-else:
-    developer_mode = False
-
-# =====================================================
-# UI Header
-# =====================================================
+# -------------------------------------------------
+# Title & Description
+# -------------------------------------------------
 st.title("⚖️ Medical-Legal Rights Assistant")
 
-st.markdown(
-    """
-Ask your question **freely**.
+st.markdown("""
+Ask your question freely.
 
-The system determines **only provable medical-legal rights**
-based on official Indian government documents:
+The system determines **only provable medical-legal rights** based on official Indian government documents:
 
 • **NHRC – Charter of Patients’ Rights (2019)**  
 • **IMC – Ethics Regulations (2002)**  
 
 ❗ **No guessing. No hallucination.**
-"""
-)
+""")
 
-st.info(
+st.warning(
     "⚠️ This system logs anonymized inputs for academic evaluation. "
     "Do not include personal identifiers (names, phone numbers, addresses)."
 )
 
-# =====================================================
-# User Input
-# =====================================================
+# -------------------------------------------------
+# Input box
+# -------------------------------------------------
 user_input = st.text_area(
     "Describe your issue:",
-    height=120
+    height=120,
+    placeholder="Describe what happened in the hospital or with the doctor…",
 )
 
-submit = st.button("🔍 Analyze")
+analyze_clicked = st.button("🔍 Analyze")
 
-# =====================================================
-# On Submit
-# =====================================================
-if submit:
-    if not user_input.strip():
-        st.warning("Please describe your issue.")
-    else:
-        # -----------------------------
-        # Fact Extraction
-        # -----------------------------
-        facts = fact_extractor.extract(user_input)
+# -------------------------------------------------
+# Processing pipeline
+# -------------------------------------------------
+if analyze_clicked and user_input.strip():
 
-        # -----------------------------
-        # Rights Evaluation
-        # -----------------------------
-        verdict = rights_evaluator.evaluate(facts)
+    extractor = FactExtractor()
+    evaluator = RightsEvaluator()
 
-        # -----------------------------
-        # Audit Logging (ALWAYS)
-        # -----------------------------
-        save_chat(
+    # ----------------------------
+    # 1. Extract facts
+    # ----------------------------
+    facts = extractor.extract(user_input)
+
+    # ----------------------------
+    # 2. Evaluate rights
+    # ----------------------------
+    verdict = evaluator.evaluate(facts)
+
+    # ----------------------------
+    # 3. Save locally (optional, audit)
+    # ----------------------------
+    save_chat(
+        user_input=user_input,
+        extracted_facts=facts,
+        verdict=verdict
+    )
+
+    # ----------------------------
+    # 4. Log to Google Sheets (NEW)
+    # ----------------------------
+    try:
+        log_to_google_sheets(
             user_input=user_input,
-            facts=facts,
+            extracted_facts=facts,
             verdict=verdict
         )
+    except Exception as e:
+        # Do NOT show to users (silent fail in production)
+        print("Sheets logging failed:", e)
 
-        # =====================================================
-        # Developer View (HIDDEN IN PRODUCTION)
-        # =====================================================
-        if developer_mode:
-            st.subheader("🔍 Extracted Facts (Developer View)")
-            st.json(facts)
+    # -------------------------------------------------
+    # Output — USER SAFE VIEW ONLY
+    # -------------------------------------------------
+    st.markdown("---")
+    st.subheader("⚖️ System Verdict")
 
-        # =====================================================
-        # User-Facing Verdict
-        # =====================================================
-        st.subheader("⚖️ System Verdict")
+    verdict_type = verdict.get("verdict_type")
 
-        # -------------------------
-        # PROVABLE
-        # -------------------------
-        if verdict["verdict_type"] == "PROVABLE":
+    # ============================
+    # PROVABLE
+    # ============================
+    if verdict_type == "PROVABLE":
 
-            primary_list = verdict.get("primary_violations", [])
-            procedural = verdict.get("procedural_remedies", [])
+        st.success("✅ Primary Proven Violation(s)")
 
-            # Primary violation
-            if primary_list:
-                primary = primary_list[0]
+        for v in verdict.get("primary_violations", []):
+            st.markdown(f"### {v['id']}")
+            st.markdown(f"**Source:** {v['source']}")
+            st.markdown(f"📚 **Citation:** {v['citation']}")
+            st.markdown("**What this means:**")
+            for line in v.get("explanation", []):
+                st.markdown(f"- {line}")
 
-                st.success(f"✅ Primary Proven Violation: **{primary['id']}**")
-                st.markdown(f"**Source:** {primary['source']}")
-                st.markdown(f"📚 **Citation:** {primary['citation']}")
+    # ============================
+    # PROCEDURAL
+    # ============================
+    elif verdict_type == "PROCEDURAL":
 
-                st.markdown("### ✅ What this means")
-                for line in primary.get("explanation", []):
-                    st.markdown(f"- {line}")
+        st.info("⚙️ Procedural Remedies Available")
 
-            # Additional violations
-            if len(primary_list) > 1:
-                st.markdown("---")
-                st.subheader("➕ Other Proven Violations")
+        for r in verdict.get("procedural_remedies", []):
+            st.markdown(f"### {r['id']}")
+            st.markdown(f"**Source:** {r['source']}")
+            st.markdown(f"📚 **Citation:** {r['citation']}")
+            st.markdown("ℹ️ **What you can do:**")
+            for line in r.get("guidance", []):
+                st.markdown(f"- {line}")
 
-                for v in primary_list[1:]:
-                    st.success(f"✅ Proven Violation: **{v['id']}**")
-                    st.markdown(f"**Source:** {v['source']}")
-                    st.markdown(f"📚 **Citation:** {v['citation']}")
+    # ============================
+    # NOT PROVABLE
+    # ============================
+    else:
+        st.warning("❓ No legally provable determination")
+        st.markdown("""
+No legally decidable right or duty applies.
 
-                    for line in v.get("explanation", []):
-                        st.markdown(f"- {line}")
-
-            # Procedural remedies
-            if procedural:
-                st.markdown("---")
-                st.subheader("⚙️ Procedural Remedies Available")
-
-                for pr in procedural:
-                    st.warning(f"⚖️ {pr['id']}")
-                    st.markdown(f"**Source:** {pr['source']}")
-                    st.markdown(f"📚 **Citation:** {pr['citation']}")
-
-                    st.markdown("### ℹ️ What you can do")
-                    for line in pr.get("explanation", []):
-                        st.markdown(f"- {line}")
-
-        # -------------------------
-        # PROCEDURAL ONLY
-        # -------------------------
-        elif verdict["verdict_type"] == "PROCEDURAL_REMEDY_AVAILABLE":
-            st.warning("⚙️ Procedural Remedy Available")
-
-            for pr in verdict.get("procedural_remedies", []):
-                st.markdown(f"**{pr['id']}**")
-                st.markdown(f"**Source:** {pr['source']}")
-                st.markdown(f"📚 **Citation:** {pr['citation']}")
-                for line in pr.get("explanation", []):
-                    st.markdown(f"- {line}")
-
-        # -------------------------
-        # NOT PROVABLE
-        # -------------------------
-        else:
-            st.info("❓ No legally provable determination")
-
-            for reason in verdict.get("reasons", []):
-                st.markdown(f"- {reason}")
-
-            st.markdown(
-                """
-### ℹ️ What you can do
-- Provide **more specific facts**
-- Clarify **who acted** (doctor / hospital)
-- Mention **emergency, refusal, or denial**
+**What you can do**
+- Provide more specific facts
+- Clarify who acted (doctor / hospital)
+- Mention emergency, refusal, or denial
 
 The system will never guess — it answers only when proof is possible.
-"""
-            )
+""")
 
-        st.caption("📝 This interaction has been securely logged for audit and evaluation.")
+    st.caption("📝 This interaction has been securely logged for audit and evaluation.")
+
