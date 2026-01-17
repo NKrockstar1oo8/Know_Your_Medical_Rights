@@ -73,9 +73,10 @@ if analyze_clicked and user_input.strip():
             extracted_facts=facts,
             verdict=verdict
         )
-    except Exception as e:
+    except Exception:
         # Do NOT show to users (silent fail in production)
-        print("Sheets logging failed:", e)
+        import traceback
+        traceback.print_exc()
 
     # -------------------------------------------------
     # Output — USER SAFE VIEW ONLY
