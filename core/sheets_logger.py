@@ -39,4 +39,6 @@ def log_to_google_sheets(user_input, extracted_facts, verdict):
         sheet.append_row(row, value_input_option="RAW")
 
     except Exception as e:
+        import traceback
         print("❌ Google Sheets logging failed:", e)
+        traceback.print_exc()
