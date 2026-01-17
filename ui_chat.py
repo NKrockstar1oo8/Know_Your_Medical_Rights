@@ -31,7 +31,7 @@ st.set_page_config(
 # =====================================================
 if APP_MODE == "DEVELOPMENT":
     with st.sidebar:
-        st.header("⚙️ System Controls")
+        st.header("⚙️ Admin Controls")
 
         developer_mode = st.checkbox(
             "Developer Mode (show extracted facts)",
@@ -39,9 +39,22 @@ if APP_MODE == "DEVELOPMENT":
         )
 
         st.caption(
-            "Developer mode reveals internal diagnostic data. "
-            "This panel is hidden in public deployment."
+            "Admin-only controls. Hidden in public deployment."
         )
+
+        st.markdown("---")
+        st.subheader("📥 Audit Logs")
+
+        try:
+            with open("logs/chat_history.db", "rb") as db_file:
+                st.download_button(
+                    label="⬇️ Download chat history (SQLite)",
+                    data=db_file,
+                    file_name="chat_history.db",
+                    mime="application/octet-stream"
+                )
+        except FileNotFoundError:
+            st.warning("No logs available yet.")
 else:
     developer_mode = False
 
