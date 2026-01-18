@@ -66,7 +66,6 @@ class FactExtractor:
             "infection_due_to_care_claimed": "unknown",
             "negligence_claimed": "unknown",
             "substandard_care_claimed": "unknown",
-            "second_opinion_denied": "unknown",
             "pressure_against_second_opinion": "unknown",
             "records_withheld_for_second_opinion": "unknown",
             "forced_pharmacy_claimed": "unknown",
@@ -278,6 +277,7 @@ class FactExtractor:
             "not allowed to buy medicines outside",
             "only hospital pharmacy allowed",
             "only from their pharmacy",
+            "buy medicine only from",
             "buy medicines only from"
         ]):
             facts["forced_pharmacy_claimed"] = "yes"
@@ -391,7 +391,7 @@ class FactExtractor:
         if any(phrase in text for phrase in [
             "patient detained",
             "not allowed to leave",
-            "not allowed to leave until bill paid"
+            "not allowed to leave until bill paid",
             "detained for payment",
             "until the full bill was paid",
             "kept in hospital for bill",
@@ -516,16 +516,17 @@ class FactExtractor:
             facts["doctor_identity_not_disclosed"] = "yes"
 
         # =====================================================
-        # Actor detection
+        # Actor detection (EXPLICIT)
         # =====================================================
         if "doctor" in text:
             facts["doctor_involved"] = "yes"
 
         if "hospital" in text:
             facts["hospital_involved"] = "yes"
-            
+
+
         # =====================================================
-        # IMPLICIT DOCTOR INVOLVEMENT (DETERMINISTIC)
+        # IMPLICIT DOCTOR INVOLVEMENT — PROCEDURES
         # =====================================================
         if re.search(r"(surgery|surgical|operation|procedure)", text):
             facts["doctor_involved"] = "yes"
@@ -543,14 +544,6 @@ class FactExtractor:
         ):
             facts["emergency_case"] = "yes"
 
-        # =====================================================
-        # Treatment refusal
-        # =====================================================
-        if re.search(
-            r"(refused|deny|denied|did not treat|no treatment|ignored)",
-            text
-        ):
-            facts["treatment_refused"] = "yes"
 
         # =====================================================
         # Admission denied
@@ -560,6 +553,25 @@ class FactExtractor:
             text
         ):
             facts["admission_denied"] = "yes"
+            
+        # =====================================================
+        # Treatment refusal
+        # =====================================================
+        if re.search(
+            r"(refuse|refused|deny|denied|did not treat|no treatment|ignored)",
+            text
+        ):
+            facts["treatment_refused"] = "yes"
+
+        # =====================================================
+        # IMPLICIT DOCTOR INVOLVEMENT — EMERGENCY ADMISSION
+        # =====================================================
+        if (
+            facts["emergency_case"] == "yes"
+            and facts["admission_denied"] == "yes"
+        ):
+            facts["doctor_involved"] = "yes"
+
 
         # =====================================================
         # Payment demanded
