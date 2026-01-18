@@ -47,10 +47,12 @@ def log_to_google_sheets(user_input, extracted_facts, verdict):
             json.dumps(extracted_facts, ensure_ascii=False),
             verdict.get("verdict_type"),
             json.dumps(verdict.get("primary_violations", []), ensure_ascii=False),
+            json.dumps(verdict.get("imc_duties", []), ensure_ascii=False),
             json.dumps(verdict.get("procedural_remedies", []), ensure_ascii=False),
             json.dumps(verdict.get("sources", []), ensure_ascii=False),
             os.environ.get("SYSTEM_VERSION", "unknown"),
         ]
+
 
         sheet.append_row(row, value_input_option="RAW")
 

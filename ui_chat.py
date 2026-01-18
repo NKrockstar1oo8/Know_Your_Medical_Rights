@@ -55,7 +55,7 @@ if analyze_clicked and user_input.strip():
     evaluator = RightsEvaluator()
 
     # ----------------------------
-    # 1. Extract facts
+    # 1. Extract facts (INTERNAL)
     # ----------------------------
     facts = extractor.extract(user_input)
 
@@ -65,7 +65,7 @@ if analyze_clicked and user_input.strip():
     verdict = evaluator.evaluate(facts)
 
     # ----------------------------
-    # 4. Log to Google Sheets (NEW)
+    # 3. Logging (silent)
     # ----------------------------
     try:
         log_to_google_sheets(
@@ -74,31 +74,38 @@ if analyze_clicked and user_input.strip():
             verdict=verdict
         )
     except Exception:
-        # Do NOT show to users (silent fail in production)
         import traceback
         traceback.print_exc()
 
     # -------------------------------------------------
-    # Output — USER SAFE VIEW ONLY
+    # USER SAFE OUTPUT
     # -------------------------------------------------
     st.markdown("---")
     st.subheader("⚖️ System Verdict")
 
     verdict_type = verdict.get("verdict_type")
 
+    provable_rights = verdict.get("primary_violations", [])
+    procedural_rights = verdict.get("procedural_remedies", [])
+
     # ============================
     # PROVABLE
     # ============================
     if verdict_type == "PROVABLE":
 
-        st.success("✅ Primary Proven Violation(s)")
+        violated_ids = [r["id"] for r in provable_rights]
 
-        for v in verdict.get("primary_violations", []):
-            st.markdown(f"### {v['id']}")
-            st.markdown(f"**Source:** {v['source']}")
-            st.markdown(f"📚 **Citation:** {v['citation']}")
-            st.markdown("**What this means:**")
-            for line in v.get("explanation", []):
+        st.success(
+            "✅ **Proven Patient Right Violation(s):**\n\n" +
+            "\n".join([f"• {rid}" for rid in violated_ids])
+        )
+
+        for right in provable_rights:
+            st.markdown("---")
+            st.markdown(f"### {right['id']}")
+            st.caption(f"Source: {right['source']} — {right['citation']}")
+            st.markdown("**What this right guarantees:**")
+            for line in right.get("explanation", []):
                 st.markdown(f"- {line}")
 
     # ============================
@@ -106,31 +113,44 @@ if analyze_clicked and user_input.strip():
     # ============================
     elif verdict_type == "PROCEDURAL":
 
-        st.info("⚙️ Procedural Remedies Available")
+        procedural_ids = [r["id"] for r in procedural_rights]
 
-        for r in verdict.get("procedural_remedies", []):
-            st.markdown(f"### {r['id']}")
-            st.markdown(f"**Source:** {r['source']}")
-            st.markdown(f"📚 **Citation:** {r['citation']}")
-            st.markdown("ℹ️ **What you can do:**")
-            for line in r.get("guidance", []):
+        st.warning(
+            "⚠️ **Procedural Rights Implicated:**\n\n" +
+            "\n".join([f"• {rid}" for rid in procedural_ids])
+        )
+
+        for right in procedural_rights:
+            st.markdown("---")
+            st.markdown(f"### {right['id']}")
+            st.caption(f"Source: {right['source']} — {right['citation']}")
+            st.markdown("**What this means:**")
+            for line in right.get("explanation", []):
                 st.markdown(f"- {line}")
+
+        st.info(
+            "ℹ️ **Scope Limitation**\n\n"
+            "This system can identify applicable patient rights based on official documents. "
+            "It cannot advise on what actions to take or how to proceed."
+        )
 
     # ============================
     # NOT PROVABLE
     # ============================
     else:
-        st.warning("❓ No legally provable determination")
+        st.error(
+            "❌ **No Patient Right Violation Could Be Proven**\n\n"
+            "Based on the information provided, no legally provable patient right "
+            "could be determined under the applicable documents."
+        )
+
         st.markdown("""
-No legally decidable right or duty applies.
+**Why this may happen**
+- Key facts are missing or unclear
+- Emergency, refusal, or denial not explicitly stated
+- Responsibility (doctor vs hospital) not specified
 
-**What you can do**
-- Provide more specific facts
-- Clarify who acted (doctor / hospital)
-- Mention emergency, refusal, or denial
-
-The system will never guess — it answers only when proof is possible.
+The system will never guess or assume.
 """)
 
-    st.caption("📝 This interaction has been securely logged for audit and evaluation.")
-
+    st.caption("📝 This interaction has been securely logged for audit and academic evaluation.")
