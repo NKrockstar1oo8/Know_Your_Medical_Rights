@@ -272,10 +272,13 @@ class FactExtractor:
 
         if any(phrase in text for phrase in [
             "forced to buy medicines",
+            "forced us to buy medicines",
             "forced to buy medicine",
             "hospital pharmacy compulsory",
             "not allowed to buy medicines outside",
-            "only hospital pharmacy allowed"
+            "only hospital pharmacy allowed",
+            "only from their pharmacy",
+            "buy medicines only from"
         ]):
             facts["forced_pharmacy_claimed"] = "yes"
 
