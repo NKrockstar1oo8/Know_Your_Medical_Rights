@@ -378,13 +378,19 @@ class RightsEvaluator:
         # =====================================================
         # FINAL VERDICT
         # =====================================================
-        if provable or procedural:
+        if provable or imc_duties or procedural:
+            if provable or imc_duties:
+                verdict_type = "PROVABLE"
+            else:
+                verdict_type = "PROCEDURAL"
+
             return {
-                "verdict_type": "PROVABLE" if provable else "PROCEDURAL",
+                "verdict_type": verdict_type,
                 "primary_violations": provable,
                 "imc_duties": imc_duties,
                 "procedural_remedies": procedural
             }
+
 
         return {
             "verdict_type": "NOT_PROVABLE",
