@@ -517,6 +517,13 @@ class FactExtractor:
 
         if "hospital" in text:
             facts["hospital_involved"] = "yes"
+            
+        # =====================================================
+        # IMPLICIT DOCTOR INVOLVEMENT (DETERMINISTIC)
+        # =====================================================
+        if re.search(r"(surgery|surgical|operation|procedure)", text):
+            facts["doctor_involved"] = "yes"
+
 
         # =====================================================
         # Emergency detection
