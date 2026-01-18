@@ -22,12 +22,13 @@ st.title("⚖️ Medical-Legal Rights Assistant")
 st.markdown("""
 Ask your question freely.
 
-The system determines **only provable medical-legal rights** based on official Indian government documents:
+The system determines **only provable medical-legal rights and duties**
+based strictly on official Indian government documents:
 
 • **NHRC – Charter of Patients’ Rights (2019)**  
 • **IMC – Ethics Regulations (2002)**  
 
-❗ **No guessing. No hallucination.**
+❗ **No guessing. No legal advice. No hallucination.**
 """)
 
 st.warning(
@@ -60,7 +61,7 @@ if analyze_clicked and user_input.strip():
     facts = extractor.extract(user_input)
 
     # ----------------------------
-    # 2. Evaluate rights
+    # 2. Evaluate rights & duties
     # ----------------------------
     verdict = evaluator.evaluate(facts)
 
@@ -86,10 +87,11 @@ if analyze_clicked and user_input.strip():
     verdict_type = verdict.get("verdict_type")
 
     provable_rights = verdict.get("primary_violations", [])
-    procedural_rights = verdict.get("procedural_remedies", [])
+    imc_duties = verdict.get("imc_duties", [])
+    procedural_items = verdict.get("procedural_remedies", [])
 
     # ============================
-    # PROVABLE
+    # PROVABLE RIGHTS
     # ============================
     if verdict_type == "PROVABLE":
 
@@ -108,30 +110,45 @@ if analyze_clicked and user_input.strip():
             for line in right.get("explanation", []):
                 st.markdown(f"- {line}")
 
-    # ============================
-    # PROCEDURAL
-    # ============================
-    elif verdict_type == "PROCEDURAL":
+        # ----------------------------
+        # IMC DUTIES (PARALLEL DISPLAY)
+        # ----------------------------
+        if imc_duties:
+            st.markdown("---")
+            st.subheader("🩺 Relevant Doctor Duties (IMC)")
 
-        procedural_ids = [r["id"] for r in procedural_rights]
+            for duty in imc_duties:
+                st.markdown(f"### {duty['id']}")
+                st.caption(f"Source: {duty['source']} — {duty['citation']}")
+                st.markdown("**What this duty requires:**")
+                for line in duty.get("explanation", []):
+                    st.markdown(f"- {line}")
+
+    # ============================
+    # PROCEDURAL ONLY
+    # ============================
+    elif verdict_type in ("PROCEDURAL", "PROCEDURAL_REMEDY_AVAILABLE"):
+
+        procedural_ids = [p["id"] for p in procedural_items]
 
         st.warning(
-            "⚠️ **Procedural Rights Implicated:**\n\n" +
-            "\n".join([f"• {rid}" for rid in procedural_ids])
+            "⚠️ **Procedural / Ethical Concerns Identified:**\n\n" +
+            "\n".join([f"• {pid}" for pid in procedural_ids])
         )
 
-        for right in procedural_rights:
+        for item in procedural_items:
             st.markdown("---")
-            st.markdown(f"### {right['id']}")
-            st.caption(f"Source: {right['source']} — {right['citation']}")
+            st.markdown(f"### {item['id']}")
+            st.caption(f"Source: {item['source']} — {item['citation']}")
             st.markdown("**What this means:**")
-            for line in right.get("explanation", []):
+            for line in item.get("explanation", []):
                 st.markdown(f"- {line}")
 
         st.info(
             "ℹ️ **Scope Limitation**\n\n"
-            "This system can identify applicable patient rights based on official documents. "
-            "It cannot advise on what actions to take or how to proceed."
+            "This system identifies applicable rights and professional duties "
+            "based strictly on official documents. "
+            "It does not advise on actions or remedies."
         )
 
     # ============================
@@ -139,16 +156,16 @@ if analyze_clicked and user_input.strip():
     # ============================
     else:
         st.error(
-            "❌ **No Patient Right Violation Could Be Proven**\n\n"
-            "Based on the information provided, no legally provable patient right "
-            "could be determined under the applicable documents."
+            "❌ **No Patient Right or Duty Could Be Proven**\n\n"
+            "Based on the information provided, no legally provable determination "
+            "could be made under the applicable documents."
         )
 
         st.markdown("""
 **Why this may happen**
-- Key facts are missing or unclear
-- Emergency, refusal, or denial not explicitly stated
-- Responsibility (doctor vs hospital) not specified
+- Key facts are missing or unclear  
+- Emergency, refusal, or denial not explicitly stated  
+- Responsibility (doctor vs hospital) not specified  
 
 The system will never guess or assume.
 """)

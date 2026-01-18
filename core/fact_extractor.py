@@ -102,7 +102,6 @@ class FactExtractor:
                 
             }
         }
-        text = user_input.lower()
 
         # -------------------------------------------------
         # RIGHT TO PATIENT EDUCATION — NHRC (2019)
