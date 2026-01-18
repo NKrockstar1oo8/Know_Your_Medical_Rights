@@ -383,6 +383,7 @@ class FactExtractor:
             "discharge denied",
             "refused to discharge",
             "not allowing discharge",
+            "did not allow discharge",
             "discharge papers not given"
         ]):
             facts["discharge_denied"] = "yes"
@@ -390,7 +391,9 @@ class FactExtractor:
         if any(phrase in text for phrase in [
             "patient detained",
             "not allowed to leave",
+            "not allowed to leave until bill paid"
             "detained for payment",
+            "until the full bill was paid",
             "kept in hospital for bill",
             "held until payment"
         ]):
