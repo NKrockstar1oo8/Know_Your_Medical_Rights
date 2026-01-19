@@ -7,7 +7,7 @@ from core.rights_evaluator import RightsEvaluator
 from core.sheets_logger import log_to_google_sheets
 
 # -------------------------------------------------
-# Page config
+# Page config (MUST be first Streamlit call)
 # -------------------------------------------------
 st.set_page_config(
     page_title="Medical-Legal Rights Assistant",
@@ -32,7 +32,6 @@ st.markdown("""
 }
 </style>
 """, unsafe_allow_html=True)
-
 
 # -------------------------------------------------
 # Title & Description
@@ -110,13 +109,11 @@ if analyze_clicked and user_input.strip():
     imc_duties = verdict.get("imc_duties", [])
     procedural_items = verdict.get("procedural_remedies", [])
 
-    # ============================
-    # PROVABLE RIGHTS
-    # ============================
+    # =================================================
+    # PROVABLE RIGHTS (NHRC)
+    # =================================================
     if verdict_type == "PROVABLE":
 
-        violated_ids = [r["id"] for r in provable_rights]
-        
         for right in provable_rights:
             explanation_html = "".join(
                 [f"<li>{line}</li>" for line in right.get("explanation", [])]
@@ -133,9 +130,9 @@ if analyze_clicked and user_input.strip():
             </div>
             """, unsafe_allow_html=True)
 
-        # ----------------------------
-        # IMC DUTIES (PARALLEL DISPLAY)
-        # ----------------------------
+        # -------------------------------------------------
+        # IMC DUTIES (Determinative, Parallel)
+        # -------------------------------------------------
         if imc_duties:
             st.markdown("---")
             st.subheader("🩺 Relevant Doctor Duties (IMC)")
@@ -147,20 +144,32 @@ if analyze_clicked and user_input.strip():
                 for line in duty.get("explanation", []):
                     st.markdown(f"- {line}")
 
-    # ============================
-    # PROCEDURAL ONLY
-    # ============================
+        # -------------------------------------------------
+        # ETHICAL / PROFESSIONAL CONCERNS (NON-DETERMINATIVE)
+        # -------------------------------------------------
+        if procedural_items:
+            st.markdown("---")
+            st.subheader("⚠️ Professional Conduct Concern (Ethical – Non-Determinative)")
+
+            for item in procedural_items:
+                st.caption(f"Source: {item['source']} — {item['citation']}")
+                for line in item.get("explanation", []):
+                    st.markdown(f"- {line}")
+
+            st.info(
+                "ℹ️ This section reflects ethical standards referenced in official regulations. "
+                "The system does not determine professional misconduct unless explicitly "
+                "defined by law or regulation."
+            )
+
+    # =================================================
+    # PROCEDURAL ONLY (No provable rights or duties)
+    # =================================================
     elif verdict_type in ("PROCEDURAL", "PROCEDURAL_REMEDY_AVAILABLE"):
 
-        procedural_ids = [p["id"] for p in procedural_items]
-
-        st.warning(
-            "⚠️ **Procedural / Ethical Concerns Identified:**\n\n" +
-            "\n".join([f"• {pid}" for pid in procedural_ids])
-        )
+        st.warning("⚠️ **Procedural / Ethical Concerns Identified**")
 
         for item in procedural_items:
-            st.markdown("---")
             st.markdown(f"### {item['id']}")
             st.caption(f"Source: {item['source']} — {item['citation']}")
             st.markdown("**What this means:**")
@@ -174,9 +183,9 @@ if analyze_clicked and user_input.strip():
             "It does not advise on actions or remedies."
         )
 
-    # ============================
+    # =================================================
     # NOT PROVABLE
-    # ============================
+    # =================================================
     else:
         st.error(
             "❌ **No Patient Right or Duty Could Be Proven**\n\n"
