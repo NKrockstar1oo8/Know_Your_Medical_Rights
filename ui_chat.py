@@ -15,6 +15,26 @@ st.set_page_config(
 )
 
 # -------------------------------------------------
+# Styling for proven rights (academic clean)
+# -------------------------------------------------
+st.markdown("""
+<style>
+.proven-right {
+    border-left: 6px solid #2ecc71;
+    background-color: rgba(46, 204, 113, 0.08);
+    padding: 16px;
+    margin: 20px 0;
+    border-radius: 6px;
+}
+.proven-right h3 {
+    color: #2ecc71;
+    margin-top: 0;
+}
+</style>
+""", unsafe_allow_html=True)
+
+
+# -------------------------------------------------
 # Title & Description
 # -------------------------------------------------
 st.title("⚖️ Medical-Legal Rights Assistant")
@@ -96,19 +116,22 @@ if analyze_clicked and user_input.strip():
     if verdict_type == "PROVABLE":
 
         violated_ids = [r["id"] for r in provable_rights]
-
-        st.success(
-            "✅ **Proven Patient Right Violation(s):**\n\n" +
-            "\n".join([f"• {rid}" for rid in violated_ids])
-        )
-
+        
         for right in provable_rights:
-            st.markdown("---")
-            st.markdown(f"### {right['id']}")
-            st.caption(f"Source: {right['source']} — {right['citation']}")
-            st.markdown("**What this right guarantees:**")
-            for line in right.get("explanation", []):
-                st.markdown(f"- {line}")
+            explanation_html = "".join(
+                [f"<li>{line}</li>" for line in right.get("explanation", [])]
+            )
+
+            st.markdown(f"""
+            <div class="proven-right">
+                <h3>{right['id']}</h3>
+                <p><b>Source:</b> {right['source']} — {right['citation']}</p>
+                <p><b>What this right guarantees:</b></p>
+                <ul>
+                    {explanation_html}
+                </ul>
+            </div>
+            """, unsafe_allow_html=True)
 
         # ----------------------------
         # IMC DUTIES (PARALLEL DISPLAY)
